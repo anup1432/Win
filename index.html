@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Graph Test</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <h2>Market Graph Test</h2>
+  <canvas id="priceChart" width="800" height="400"></canvas>
+
+<script>
+const ctx = document.getElementById('priceChart').getContext('2d');
+
+fetch('graph-data.php')
+  .then(res => res.json())
+  .then(data => {
+    const labels = data.map(d => d.created_at);
+    const prices = data.map(d => d.price);
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Price',
+          data: prices,
+          borderColor: '#00d27a',
+          backgroundColor: 'rgba(0,210,122,0.2)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: { responsive: true }
+    });
+  });
+</script>
+</body>
+</html>
